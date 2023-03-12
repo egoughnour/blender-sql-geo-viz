@@ -1,5 +1,5 @@
 # blender-sql-geo-viz
-Currently WIP.  Documenting process of using SQL for path calculation and blender API for video generation
+Currently a work in progress.  Documenting, implemented and possibly packaging various programmatic animation workflows, such as the process of using SQL for path animation 
 
 
 
@@ -22,24 +22,17 @@ In the long term then this repository will comprise:
 TODO
 =====
 
+    [x] Validate the query that provides points along a great circle. 
+    [x] Animate (possibly not in Blender as the python package appears unnecessarily difficult to use from outside the application)
 
-    [x] Detail ways to generate audio files from text directly.
-    [x] Set up colima and pull appropriate docker image for a shape/geom-capable database. Else install locally.
-    [x] Parametrize a query that provides, e.g.,  points along a great circle, given two locations.
-    [x] create a texture map of the earth's surface and 
-    [x] apply the map to a globe mesh in a Blender scene
-    [x] create a sphere mesh for each point in the set of interpolating point on the path
-    [x] animate
-
-
-Details
+Text-to-Speech
 =======
 
 When generating audio files directly from text I have used a relatively simple method.  I will include links or a more comprehensive explanation relatively soon.  The key is to open a text editor and then under the application drop-down to select _Services > Service Preferences..._.
 This ought to open the _Keyboard_ settings, or at least they should be reachable from this window.
 
-Note below the option to save text as audio. Check this box or its parent in the tree. After this change to the preferences, only two steps are needed to generate audio files.
+Note below the option to save text as audio (_Add to Music as a Spoken Track_). Check this box or its parent in the tree. After this change to the preferences, only two steps are needed to generate audio files.
 
   1. Select the text to convert, then select the option to save as audio in the context menu.
-  2. Save to a directory other than music, such as a directory in which you have your various media collected for a specific iMovie.
+  2. Save to a directory other than music, such as a directory in which you have various media collected for inclusion in an iMovie.
 <img width="497" alt="service_preferences" src="https://user-images.githubusercontent.com/457471/224579744-e85e24b1-2a3b-44c6-b773-582eb846f435.png">
