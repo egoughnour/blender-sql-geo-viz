@@ -18,3 +18,19 @@ class Testing(unittest.TestCase):
             if env_dict["DOCKER_HOST"]:
                 break
         assert(env_dict["DOCKER_HOST"].startswith("unix:///"))
+
+    def test_regex_capture_from_stderr_for_socket_dict(self):
+        env_dict = {}
+        control_text = b"""
+time="2023-03-12T14:11:47-05:00" level=info msg="colima is running using QEMU"
+time="2023-03-12T14:11:47-05:00" level=info msg="arch: aarch64"
+time="2023-03-12T14:11:47-05:00" level=info msg="runtime: docker"
+time="2023-03-12T14:11:47-05:00" level=info msg="mountType: sshfs"
+time="2023-03-12T14:11:47-05:00" level=info msg="socket: unix:///Users/theuser/.colima/default/docker.sock"'"""
+        regex = r"msg=\"socket: (?P<socket>.*?)\"'"
+        matches = re.finditer(regex, control_text, re.MULTILINE)
+        for _, match in enumerate(matches, start=1):
+            env_dict["DOCKER_HOST"] = match.group('socket')
+            if env_dict["DOCKER_HOST"]:
+                break
+        assert(env_dict["DOCKER_HOST"].startswith("unix:///"))
