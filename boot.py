@@ -66,12 +66,12 @@ same_container = client.containers.get(container_name)
 assert(same_container.id == container.id)
 
 # Check if database already exists
-check_db_cmd = f"psql -U postgres -tAc \"SELECT 1 FROM pg_database WHERE datname='{database}'\""
+check_db_cmd = f"psql -U {username} -tAc \"SELECT 1 FROM pg_database WHERE datname='{database}'\""
 output = container.exec_run(check_db_cmd)
 
 if not output.output.decode("utf-8").strip():
     # If database does not exist, create it
-    create_db_cmd = f"createdb -U postgres {database}"
+    create_db_cmd = f"createdb -U {username} {database}"
     container.exec_run(create_db_cmd)
     print(f"Database {database} created successfully!")
 else:
