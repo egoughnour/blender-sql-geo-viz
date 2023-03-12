@@ -62,13 +62,18 @@ container = client.containers.run(
 print('Started container:', container.id)
 
 # Get running container by name
-container = client.containers.get(container_name)
+same_container = client.containers.get(container_name)
+assert(same_container.id == container.id)
 
-# Run command to create database in container
-create_db_cmd = f"createdb -U postgres {database}"
-container.exec_run(create_db_cmd)
+# Check if database already exists
+check_db_cmd = f"psql -U postgres -tAc \"SELECT 1 FROM pg_database WHERE datname='{database}'\""
+output = container.exec_run(check_db_cmd)
 
-# Confirm database creation
-list_dbs_cmd = "psql -U postgres -c '\l'"
-output = container.exec_run(list_dbs_cmd)
-print(output.output.decode("utf-8"))
+if not output.output.decode("utf-8").strip():
+    # If database does not exist, create it
+    create_db_cmd = f"createdb -U postgres {database}"
+    container.exec_run(create_db_cmd)
+    print(f"Database {database} created successfully!")
+else:
+    # If database already exists, print message and exit
+    print(f"Database {database} already exists!")
