@@ -109,3 +109,6 @@ def main():
     else:
         # If database already exists, print message and exit
         print(f"Database {database} already exists!")
+
+if __name__ == '__main__':
+    main()
