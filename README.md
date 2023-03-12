@@ -23,7 +23,7 @@ TODO
 =====
 
 
-    [ ] Detail ways to generate audio files from text directly.
+    [x] Detail ways to generate audio files from text directly.
     [x] Set up colima and pull appropriate docker image for a shape/geom-capable database. Else install locally.
     [x] Parametrize a query that provides, e.g.,  points along a great circle, given two locations.
     [x] create a texture map of the earth's surface and 
@@ -35,4 +35,10 @@ TODO
 Details
 =======
 
-When generating audio files directly from text I have used a relatively simple method.  I will include links or a more comprehensive explanation relatively soon.  The key is to open a text editor
+When generating audio files directly from text I have used a relatively simple method.  I will include links or a more comprehensive explanation relatively soon.  The key is to open a text editor and then under the application drop-down to select _Services > Service Preferences..._.
+This ought to open the _Keyboard_ settings, or at least they should be reachable from this window.
+
+Note below the option to save text as audio. Check this box or its parent in the tree. After this change to the preferences, only two steps are needed to generate audio files.
+
+  1. Select the text to convert, then select the option to save as audio in the context menu.
+  2. Save to a directory other than music, such as a directory in which you have your various media collected for a specific iMovie.
