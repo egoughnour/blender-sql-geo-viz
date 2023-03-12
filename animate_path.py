@@ -1,9 +1,45 @@
-import psycopg2
 import math
 import bpy
+import psycopg2
+import json
+import os
+import argparse
 
-# Connect to PostgreSQL database
-conn = psycopg2.connect(database="mydatabase", user="myusername", password="mypassword", host="localhost", port="5432")
+# Load configuration from file or environment variables
+with open('config.json', 'r') as f:
+    config = json.load(f)
+    
+host = os.getenv('DB_HOST', config['db']['host'])
+port = os.getenv('DB_PORT', config['db']['port'])
+database = os.getenv('DB_NAME', config['db']['name'])
+username = os.getenv('DB_USERNAME', config['db']['username'])
+password = os.getenv('DB_PASSWORD', config['db']['password'])
+
+# Connect to the database
+conn = psycopg2.connect(
+    host=host,
+    port=port,
+    database=database,
+    user=username,
+    password=password
+)
+
+# Create a cursor
+cursor = conn.cursor()
+
+# Parse command line arguments
+parser = argparse.ArgumentParser()
+parser.add_argument('--texture', type=str, help='path to the texture map', default='images/ear0xuu2.jpg')
+parser.add_argument('--start', type=str, help='starting coordinates as "lat,lon"')
+parser.add_argument('--end', type=str, help='ending coordinates as "lat,lon"')
+parser.add_argument('--interpolation-points', type=int, default=20, help='number of interpolation points to generate along the path')
+args = parser.parse_args()
+
+# Extract arguments
+texture_path = args.texture
+start_coords = tuple(map(float, args.start.split(',')))
+end_coords = tuple(map(float, args.end.split(',')))
+num_points = args.interpolation_points
 
 # Define SQL query with parameters
 sql = """
@@ -23,8 +59,7 @@ FROM great_circle_path, generate_series(1, %s) AS s(n),
 """
 
 # Execute SQL query with parameters and retrieve points along the path
-cursor = conn.cursor()
-cursor.execute(sql, (start_lon, start_lat, end_lon, end_lat, num_points, num_points))
+cursor.execute(sql, (start_coords[1], start_coords[0], end_coords[1], end_coords[0], num_points, num_points))
 points = cursor.fetchall()
 cursor.close()
 conn.close()
@@ -38,7 +73,7 @@ globe = bpy.context.object
 globe.name = "Globe"
 
 # Apply texture map to globe mesh
-texture = bpy.data.images.load("path/to/texture/map.jpg")
+texture = bpy.data.images.load(texture_path)
 material = bpy.data.materials.new(name="GlobeMaterial")
 material.use_nodes = True
 material.node_tree.nodes.new("ShaderNodeTexImage")
