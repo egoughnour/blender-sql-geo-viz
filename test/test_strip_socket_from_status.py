@@ -21,7 +21,7 @@ class Testing(unittest.TestCase):
 
     def test_regex_capture_from_stderr_for_socket_dict(self):
         env_dict = {}
-        control_text = b"""
+        control_text = """
 time="2023-03-12T14:11:47-05:00" level=info msg="colima is running using QEMU"
 time="2023-03-12T14:11:47-05:00" level=info msg="arch: aarch64"
 time="2023-03-12T14:11:47-05:00" level=info msg="runtime: docker"
