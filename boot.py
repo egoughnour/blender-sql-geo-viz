@@ -10,11 +10,13 @@ def get_docker_socket_as_env_dict(status_result, is_output_on_stderr :bool = Fal
     output, socket_output_pattern = None, None
     if is_output_on_stderr:
         output = status_result.stderr
-        socket_output_pattern = r"msg=\"socket: (?P<socket>.*?)\"'"
+        socket_output_pattern = r"msg=\"socket: (?P<socket>.*?)\""
     else:
         output = status_result.stdout
         socket_output_pattern = r"^INFO\[\d*?] socket: (?P<socket>.*?)$"
     docker_env_dict = {}
+    if type(output) is bytes:
+        output = output.decode('utf-8')
     matches = re.finditer(socket_output_pattern, output, re.MULTILINE)
     for _, match in enumerate(matches, start=1):
         docker_env_dict["DOCKER_HOST"] = match.group('socket')
@@ -29,6 +31,8 @@ def get_colima_status_and_socket():
     docker_dict = None
     status_result = subprocess.run(status_arg_list, capture_output=True)
     result_text = status_result.stdout
+    if status_result.returncode != 0:
+        return docker_dict, is_running
     is_success_output_on_stderr = status_result.returncode == 0 and len(status_result.stdout) == 0
     if is_success_output_on_stderr:
         result_text = status_result.stderr
