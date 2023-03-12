@@ -42,3 +42,4 @@ Note below the option to save text as audio. Check this box or its parent in the
 
   1. Select the text to convert, then select the option to save as audio in the context menu.
   2. Save to a directory other than music, such as a directory in which you have your various media collected for a specific iMovie.
+<img width="497" alt="service_preferences" src="https://user-images.githubusercontent.com/457471/224579744-e85e24b1-2a3b-44c6-b773-582eb846f435.png">
