@@ -1,5 +1,15 @@
 import subprocess
 import docker
+import json
+import os
+
+with open('config.json', 'r') as f:
+    config = json.load(f)
+host = os.getenv('DB_HOST', config['db']['host'])
+port = os.getenv('DB_PORT', config['db']['port'])
+database = os.getenv('DB_NAME', config['db']['name'])
+username = os.getenv('DB_USERNAME', config['db']['username'])
+password = os.getenv('DB_PASSWORD', config['db']['password'])
 
 # Check if Colima is already installed
 result = subprocess.run(['brew', 'ls', '--versions', 'colima'], capture_output=True)
@@ -37,8 +47,8 @@ client.images.pull(image_name)
 
 # Run a container based on the PostGIS image
 container_name = 'my-postgres-container'
-port_mapping = {'5432/tcp': 5432}
-environment = {'POSTGRES_PASSWORD': 'mysecretpassword'}
+port_mapping = {'5432/tcp': port}
+environment = {'POSTGRES_PASSWORD': password}
 volumes = {'/data/postgres': {'bind': '/var/lib/postgresql/data', 'mode': 'rw'}}
 container = client.containers.run(
     image_name,
@@ -50,3 +60,15 @@ container = client.containers.run(
 )
 
 print('Started container:', container.id)
+
+# Get running container by name
+container = client.containers.get(container_name)
+
+# Run command to create database in container
+create_db_cmd = f"createdb -U postgres {database}"
+container.exec_run(create_db_cmd)
+
+# Confirm database creation
+list_dbs_cmd = "psql -U postgres -c '\l'"
+output = container.exec_run(list_dbs_cmd)
+print(output.output.decode("utf-8"))
