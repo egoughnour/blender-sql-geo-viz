@@ -19,11 +19,14 @@ In the long term then this repository will comprise:
     6. Description of and/or links to details of techniques that facilitate non-programmatic steps in production of video content. 
     
 
-TODO
+TODO (Immediate)
 =====
 
-    [x] Validate the query that provides points along a great circle. 
-    [x] Animate (possibly not in Blender as the python package appears unnecessarily difficult to use from outside the application)
+    [ ] Validate the query that provides points along a great circle. 
+    [x] Animate base Earth image (check notebook)
+    [ ] Apply path to pythreejs image.
+    [ ] Port to another animation framework?
+    [ ] Record from within Jupyter?
 
 Text-to-Speech
 =======
