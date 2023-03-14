@@ -1,5 +1,5 @@
 # blender-sql-geo-viz
-Currently a work in progress.  Documenting, implemented and possibly packaging various programmatic animation workflows, such as the process of using SQL for path animation 
+Currently a work in progress.  Implementing, documenting and possibly packaging various programmatic animation workflows, such as the process of using SQL for path animation 
 
 
 
