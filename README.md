@@ -1,7 +1,7 @@
 # blender-sql-geo-viz
 Currently a work in progress.  Implementing, documenting and possibly packaging various programmatic animation workflows, such as the process of using SQL for path animation 
 
-
+![Intro Video](media/this_repository.mp4)
 
 ## Big Picture
 I am using postgis to generate animations as part of an attempt to generate video content that is polished enough to share or post, _e.g._, to YouTube.
